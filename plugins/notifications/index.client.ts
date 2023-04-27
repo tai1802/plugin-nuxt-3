@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     const notificationItem = document.createElement("div");
     notificationItem.style.width = "400px";
     notificationItem.classList.add("notifications-item");
-    notificationItem.setAttribute("data-uuid", `${notificationsState.value.length}`);
+    notificationItem.setAttribute("data-uuid", `${Object?.keys(notificationsState.value || {}).length}`);
     if (notifications) {
       notifications.classList.add("notifications");
       notifications.style.display = "flex";
@@ -34,7 +34,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       contentClass: options.contentClass,
       contentText: options.contentText,
       title: options.title,
-      id: notificationsState.value.length,
+      id: Object.keys(notificationsState.value || {}).length,
       type: options.type,
     });
     Component.mount(notificationItem);
@@ -46,15 +46,19 @@ export default defineNuxtPlugin((nuxtApp) => {
     contentClass: "",
   };
   const notificationFunc = (value: any) => {
+    console.log(notificationsState.value);
     const idx = value?.detail;
     notificationsState.value[idx]?.unmount();
+    delete notificationsState.value[idx];
     document.querySelector(`div[data-uuid="${idx}"]`)?.remove();
   };
   return {
     provide: {
       notifications: (options: Options) => {
         const comp = createComponent(Object.assign({}, { ...defaults }, { ...options }));
-        notificationsState.value.push(comp);
+        const obj: any = {};
+        obj[`${Object.keys(notificationsState.value || {}).length}`] = comp;
+        notificationsState.value = { ...notificationsState.value, ...obj };
         document.addEventListener("notifications", notificationFunc, false);
       },
     },
