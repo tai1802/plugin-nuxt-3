@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $notifications, $time, $myPlugin2 } = useNuxtApp();
+const { $notifications, $time } = useNuxtApp();
 const count = ref(1);
 
 const addSuccessNoti = () => {
@@ -22,10 +22,6 @@ const addErrorNoti = () => {
   });
   count.value = count.value + 1;
 };
-onMounted(() => {
-  // console.log($time);
-  console.log($myPlugin2());
-});
 </script>
 
 <template>
