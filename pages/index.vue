@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const { $notifications } = useNuxtApp();
+const { $notifications, $time, $myPlugin2 } = useNuxtApp();
 const count = ref(1);
-onMounted(() => {});
-const notificationsState = useNotifications();
+
 const addSuccessNoti = () => {
   $notifications({
     title: "test noti",
@@ -23,9 +22,14 @@ const addErrorNoti = () => {
   });
   count.value = count.value + 1;
 };
+onMounted(() => {
+  // console.log($time);
+  console.log($myPlugin2());
+});
 </script>
 
 <template>
+  <div>{{ $time() }}</div>
   <div class="mt-4 ml-4">
     <button class="border p-2 mr-4" @click="addSuccessNoti">Add Event Success</button>
     <button class="border p-2 mr-4" @click="addErrorNoti">Add Event Error</button>

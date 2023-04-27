@@ -26,7 +26,7 @@ interface IPros {
 
 const { title, contentText, contentClass, id, timeout = 6000, type = "success" } = defineProps<IPros>();
 
-const onCloseClick = (e: any) => {
+const onCloseClick = () => {
   var event = new CustomEvent("notifications", {
     detail: id,
   });
@@ -35,10 +35,7 @@ const onCloseClick = (e: any) => {
 
 onMounted(() => {
   setTimeout(() => {
-    var event = new CustomEvent("notifications", {
-      detail: id,
-    });
-    document.dispatchEvent(event);
+    onCloseClick();
   }, timeout);
 });
 </script>

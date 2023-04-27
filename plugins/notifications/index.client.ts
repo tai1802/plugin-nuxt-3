@@ -1,5 +1,5 @@
 import Notifications from "./_notifications.vue";
-import { createApp, h } from "vue";
+import { createApp } from "vue";
 
 export default defineNuxtPlugin((nuxtApp) => {
   type notificationType = "success" | "error";
