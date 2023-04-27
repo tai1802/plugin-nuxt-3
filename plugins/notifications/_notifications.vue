@@ -2,6 +2,8 @@
   <div
     class="alert-content notification-animation container"
     :class="`${contentClass} ${type === 'success' ? 'noti-success' : 'noti-error'}`"
+    @mousemove="isHover = true"
+    @mouseleave="isHover = false"
   >
     <div class="content">
       <span v-if="title" class="title font-white">{{ title }}</span>
@@ -23,7 +25,8 @@ interface IPros {
   title: string;
   id: number;
 }
-
+const isHover = ref(false);
+const timeoutFunc = ref();
 const { title, contentText, contentClass, id, timeout = 6000, type = "success" } = defineProps<IPros>();
 
 const onCloseClick = () => {
@@ -33,11 +36,25 @@ const onCloseClick = () => {
   document.dispatchEvent(event);
 };
 
-onMounted(() => {
-  setTimeout(() => {
+const handleSetTimeout = () => {
+  timeoutFunc.value = setTimeout(() => {
     onCloseClick();
   }, timeout);
+};
+onMounted(() => {
+  handleSetTimeout();
 });
+
+watch(
+  () => isHover.value,
+  () => {
+    if (isHover.value) {
+      clearTimeout(timeoutFunc.value);
+    } else {
+      handleSetTimeout();
+    }
+  }
+);
 </script>
 
 <style scoped>
