@@ -46,7 +46,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     contentClass: "",
   };
   const notificationFunc = (value: any) => {
-    console.log(notificationsState.value);
     const idx = value?.detail;
     notificationsState.value[idx]?.unmount();
     delete notificationsState.value[idx];
