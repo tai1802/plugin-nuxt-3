@@ -2,9 +2,17 @@
 const { $notifications } = useNuxtApp();
 const router = useRouter();
 
-const { data } = useAsyncData("quote", () => useFetch("/api/quote/1"));
+// const { data } = useAsyncData("quote", () => useFetch("/api/quote/1"));
 
-onMounted(async () => {});
+const { data, pending, execute } = useFetch("/api/quote/1", {
+  key: "quote",
+  server: true,
+  immediate: false,
+});
+
+onMounted(async () => {
+  execute();
+});
 
 const callAPI = async () => {
   // const data = await useQuoteAdvance(2);
@@ -18,7 +26,8 @@ const callAPI = async () => {
   //   });
   // }
 
-  refreshNuxtData("quote");
+  // clearNuxtData("quote");
+  execute();
 };
 
 const goToTestPage = () => {
@@ -30,6 +39,8 @@ const goToTestPage = () => {
   <div class="mt-4 ml-4 gap-8">
     <button @click="callAPI" class="mr-4 px-2 py-1">Call API</button>
     <button @click="goToTestPage">go to test page</button>
+    <div v-if="pending">pending</div>
+    <div v-else>{{ data }}</div>
   </div>
 </template>
 
